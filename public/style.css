@@ -63,7 +63,8 @@ body{
     gap:15px;
 }
 
-.input-area input{
+.input-area input,
+.input-area textarea{
     flex:1;
 
     padding:16px 20px;
@@ -81,6 +82,20 @@ body{
     color:white;
 
     font-size:15px;
+}
+
+.input-area textarea {
+    resize: none;
+    height: 50px;
+    font-family: inherit;
+    line-height: 1.4;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    scrollbar-width: none;
+}
+
+.input-area textarea::-webkit-scrollbar {
+    display: none;
 }
 
 button{
@@ -253,7 +268,10 @@ button{
 
 .text{
     word-wrap:break-word;
-    line-height:1.4;
+    line-height:1.45;
+    white-space:pre-wrap;
+    tab-size:4;
+    -moz-tab-size:4;
 }
 
 @keyframes pop{
@@ -974,4 +992,46 @@ button.clear-chat-btn:active {
     opacity: 0 !important;
     transform: translateY(8px) scale(0.95) !important;
     transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+/* Developer Code Block Rendering Styles */
+.code-block-container {
+    margin: 8px 0 0 0;
+    padding: 12px 16px;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow-x: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: block;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+/* Custom scrollbars for code block containers on WebKit browsers */
+.code-block-container::-webkit-scrollbar {
+    height: 6px;
+}
+.code-block-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.code-block-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+.code-block-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.code-block {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    tab-size: 4;
+    -moz-tab-size: 4;
 }
