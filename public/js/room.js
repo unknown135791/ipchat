@@ -208,7 +208,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const textDiv = document.createElement("div");
         textDiv.classList.add("text");
-        textDiv.textContent = message; // Safe escaping using textContent
+
+        // Code block parsing regex matching ```code``` blocks
+        const codeBlockRegex = /```(?:[a-zA-Z0-9_-]+\n)?([\s\S]*?)```/g;
+        let lastIndex = 0;
+        let match;
+        let hasCodeBlock = false;
+
+        while ((match = codeBlockRegex.exec(message)) !== null) {
+            hasCodeBlock = true;
+            const textSegment = message.substring(lastIndex, match.index);
+            const codeSegment = match[1];
+
+            // Render preceding text segment if not empty
+            if (textSegment) {
+                const textSpan = document.createElement("span");
+                textSpan.textContent = textSegment;
+                textDiv.appendChild(textSpan);
+            }
+
+            // Render code segment inside <pre><code>
+            const pre = document.createElement("pre");
+            pre.classList.add("code-block-container");
+            const code = document.createElement("code");
+            code.classList.add("code-block");
+            code.textContent = codeSegment; // textContent preserves exact spaces/tabs and handles HTML escaping completely
+            pre.appendChild(code);
+            textDiv.appendChild(pre);
+
+            lastIndex = codeBlockRegex.lastIndex;
+        }
+
+        // Render remaining text segment if not empty
+        if (lastIndex < message.length) {
+            const remainingText = message.substring(lastIndex);
+            const textSpan = document.createElement("span");
+            textSpan.textContent = remainingText;
+            textDiv.appendChild(textSpan);
+        }
+
+        // If no code blocks were found, default to direct textContent rendering
+        if (!hasCodeBlock) {
+            textDiv.textContent = message;
+        }
 
         const copyBtn = document.createElement("button");
         copyBtn.classList.add("copy-btn");
@@ -253,7 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (messageInput) {
         messageInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault(); // Prevent default newline insertion in textarea
                 handleSend();
             }
         });
